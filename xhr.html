@@ -13,6 +13,7 @@
     <div class="title"></div>
     <h4></h4>
     <ul></ul>
+    
 
 </body>
 </html>
@@ -26,14 +27,54 @@
     ********************************************************/
 
     //宣告一個XMLHttpRequest物件
+    var xhr = new XMLHttpRequest;
 
 
     //建立請求的各項設定及實質內容
-
+    xhr.open(
+        'GET',
+        'https://kktix.com/events.json'
+    );
 
     //建立得到回應時的各項設定及行為
-
+    xhr.onload = function(){
+        var type = xhr.getResponseHeader("Content-Type");
+        var status = xhr.status;
+        //回傳的資料 
+        var response = xhr.responseText;
+        // console.log(response);
+        render(response);
+    }
 
     //送出請求
+    xhr.send();
+    
+
+    //資料渲染
+    function render(response){
+        //資料格式轉換成物件、陣列形式
+        let data = JSON.parse(response);
+        console.log(data);
+        //標題
+        let title = document.querySelector(".title");
+        title.innerHTML = data.title;
+
+        //活動資料
+        let content = data.entry;
+        let ul = document.querySelector("ul");
+
+        let list = "";
+
+        content.forEach((item,index)=>{
+            list +=`<li>${item.title}</li>`;
+        });
+
+        ul.innerHTML = list;
+        
+    }
+
+
+
+
 
     </script>
